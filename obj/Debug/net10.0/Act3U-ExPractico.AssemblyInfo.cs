@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Act3U-ExPractico")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+467abc998bf4fb78167b0dab17ee485c5f56beb8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+527195ce7a7c99459d393ca7a0cd71421f672e06")]
 [assembly: System.Reflection.AssemblyProductAttribute("Act3U-ExPractico")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Act3U-ExPractico")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
