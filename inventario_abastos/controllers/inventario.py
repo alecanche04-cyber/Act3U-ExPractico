@@ -65,6 +65,7 @@ def calculate_suggested_order_qty(producto: Producto, factor: int = 2) -> int: #
 
 	try:
 		cantidad_actual = int(getattr(producto, "cantidad", 0) or 0) # Obtiene la cantidad actual del producto
+		cantidad_minima = int(getattr(producto, "cantidad_minima", 1) or 1) # Obtiene la cantidad mínima permitida
 	except Exception:
 		logger.exception("Error leyendo campos numéricos del producto %s", getattr(producto, "id", None)) # Registra error al leer campos numéricos
 		return 0 # En caso de error, devuelve 0
