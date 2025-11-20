@@ -2,34 +2,40 @@
 
 Este README describe la arquitectura del proyecto, la función de cada archivo existente y, cuando corresponde, la función y salida esperada de los métodos implementados.
 
-Estructura (idea base que usas)
 --------------------------------
-```
+
 inventario_abastos/
 │
 ├── controllers/
+│   ├── __init__.py
 │   ├── inventario.py
 │   ├── pedidos.py
 │
 ├── models/
+│   ├── __init__.py
+│   ├── lote.py
 │   ├── producto.py
 │   ├── proveedor.py
 │
 ├── routes/
+│   ├── __init__.py
 │   ├── producto_routes.py
 │   ├── pedido_routes.py
 │
 ├── services/
+│   ├── __init__.py
 │   ├── alertas.py
 │   ├── notificaciones.py
 │
 ├── utilidades/
-│   ├── config.py
-│   ├── app.py
+│   ├──helpers.py
 │
 └── database/
-    └── db.py
-```
+│     └── db.py
+│
+├── config.py
+└── app.py
+
 
 Resumen general
 ----------------
