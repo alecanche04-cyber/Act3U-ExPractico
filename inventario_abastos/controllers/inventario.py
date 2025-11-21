@@ -12,7 +12,7 @@ from ..database.db import db  # Importa la instancia de la base de datos
 logger = logging.getLogger(__name__) # Crea un registrador para guardar mensajes de error o informacion util
 
 
-def check_low_stock() -> List[Dict]: #Buscar productos con stock menor o igual a lo permitido
+def verificar_bajo_stock(): #Buscar productos con stock menor o igual a lo permitido
 
 	productos = Producto.query.filter(Producto.cantidad <= Producto.cantidad_minima).all() # Obtiene productos con stock bajo
 	salida: List[Dict] = [] # Lista para almacenar resultados
@@ -34,7 +34,7 @@ def check_low_stock() -> List[Dict]: #Buscar productos con stock menor o igual a
 	return salida
 
 
-def check_expiring_items(days: int = 7) -> List[Dict]: # Buscar lotes cuya fecha de caducidad está dentro de los próximos `days` días
+def verificar_items_por_caducar(days: int = 7) -> List[Dict]: # Buscar lotes cuya fecha de caducidad está dentro de los próximos `days` días
 
 	limite = datetime.utcnow() + timedelta(days=days) # Calcula la fecha límite para la caducidad
 	lotes = Lote.query.filter(Lote.fecha_caducidad != None, Lote.fecha_caducidad <= limite).all() # Consulta lotes que caducan antes del límite
@@ -56,7 +56,7 @@ def check_expiring_items(days: int = 7) -> List[Dict]: # Buscar lotes cuya fecha
 	return salida # Devuelve la lista de lotes próximos a caducar
 
 
-def calculate_suggested_order_qty(producto: Producto, factor: int = 2) -> int: # Calcular cantidad sugerida para reponer un producto
+def calcular_cantidad_sugerida_orden(producto: Producto, factor: int = 2) -> int: # Calcular cantidad sugerida para reponer un producto
 	# Regla simple (configurable):
 	# objetivo = cantidad_minima * factor
 	# sugerida = max(objetivo - cantidad_actual, cantidad_minima)
