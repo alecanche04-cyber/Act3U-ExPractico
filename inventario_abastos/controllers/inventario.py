@@ -34,9 +34,9 @@ def verificar_bajo_stock(): #Buscar productos con stock menor o igual a lo permi
 	return salida
 
 
-def verificar_items_por_caducar(days: int = 7) -> List[Dict]: # Buscar lotes cuya fecha de caducidad está dentro de los próximos `days` días
+def verificar_items_por_caducar(dias: int = 7) -> List[Dict]: # Buscar lotes cuya fecha de caducidad está dentro de los próximos `days` días
 
-	limite = datetime.utcnow() + timedelta(days=days) # Calcula la fecha límite para la caducidad
+	limite = datetime.utcnow() + timedelta(days=dias) # Calcula la fecha límite para la caducidad
 	lotes = Lote.query.filter(Lote.fecha_caducidad != None, Lote.fecha_caducidad <= limite).all() # Consulta lotes que caducan antes del límite
 	salida: List[Dict] = [] # Lista para almacenar resultados
 	for l in lotes: # Recorre lotes encontrados
