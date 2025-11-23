@@ -1,4 +1,7 @@
-#Se importan los routers para que sea mas faciles de usar en este modulo
-from .productos_routes import router as productos_router #Router para productos 
-from .pedidos_routes import router as pedido_router #Router para pedidos 
-__all__ = ["productos_router", "pedido_router"] #all define define lo que sera accesible a la hora de importar el paquete
+# __init__.py
+# Permite importar los routers desde la carpeta "routes".
+
+from .productos_router import router as productos_router
+from .pedidos_router import router as pedidos_router
+
+__all__ = ["productos_router", "pedidos_router"]
