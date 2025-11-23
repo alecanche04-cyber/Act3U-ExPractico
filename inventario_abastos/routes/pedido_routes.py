@@ -2,7 +2,7 @@
 # Routes de Pedidos
 # Manejo de pedidos manuales y automáticos
 #---------------------------------------------
-
+# pedidos_router.py
 from fastapi import APIRouter
 from datetime import date
 
@@ -11,50 +11,49 @@ router = APIRouter(
     tags=["Pedidos"]
 )
 
-# Simulación de base de datos para pedidos
-pedidos = []
+# Simulación de base de datos de pedidos
+PEDIDOS = []
 
-
-# Obtener todos los pedidos
 @router.get("/")
 def obtener_pedidos():
-    return {"pedidos": pedidos}
+    return {
+        "total": len(PEDIDOS),
+        "pedidos": PEDIDOS
+    }
 
-
-# Crear un pedido manualmente
 @router.post("/")
 def crear_pedido(pedido: dict):
-    pedido["id"] = len(pedidos) + 1
+    nuevo_id = len(PEDIDOS) + 1
+    pedido["id"] = nuevo_id
     pedido["fecha"] = date.today()
-
-    pedidos.append(pedido)
-    return {"mensaje": "Pedido creado exitosamente", "pedido": pedido}
-
-
-# Crear un pedido automático según el inventario
-@router.post("/generar-automatico")
-def generar_pedido_automatico():
-    # Importar productos desde el router de productos
-    from routers.productos_router import productos
-
-    productos_faltantes = [
-        {
-            "producto": p["nombre"],
-            "stock_actual": p["stock"],
-            "stock_minimo": p["stock_min"]
-        }
-        for p in productos if p["stock"] < p["stock_min"]
-    ]
-
-    pedido = {
-        "id": len(pedidos) + 1,
-        "fecha": date.today(),
-        "productos_a_reponer": productos_faltantes
-    }
-
-    pedidos.append(pedido)
+    PEDIDOS.append(pedido)
 
     return {
-        "mensaje": "Pedido automático generado correctamente",
+        "mensaje": "Pedido creado correctamente",
         "pedido": pedido
     }
+@router.get("/{pedido_id}")
+def obtener_pedido_por_id(pedido_id: int):
+    pedido = next((p for p in PEDIDOS if p["id"] == pedido_id), None)
+    if not pedido:
+        return {"error": "Pedido no encontrado"}
+    return pedido
+
+
+@router.put("/{pedido_id}")
+def actualizar_pedido(pedido_id: int, datos: dict):
+    for p in PEDIDOS:
+        if p["id"] == pedido_id:
+            p.update(datos)
+            return {
+                "mensaje": "Pedido actualizado",
+                "pedido": p
+            }
+    return {"error": "Pedido no encontrado"}
+
+
+@router.delete("/{pedido_id}")
+def eliminar_pedido(pedido_id: int):
+    global PEDIDOS
+    PEDIDOS = [p for p in PEDIDOS if p["id"] != pedido_id]
+    return {"mensaje": "Pedido eliminado correctamente"}
