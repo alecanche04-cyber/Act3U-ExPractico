@@ -83,12 +83,6 @@ PRODUCTOS = [
     {"id": 22, "nombre": "Cloro 1L", "categoria": "Limpieza", "stock": 11, "stock_min": 4,
     "precio": 18.00, "caducidad": date(2026, 11, 1)},
 ]
-
-
-# --------------------------------------------------
-# RUTAS CRUD
-# --------------------------------------------------
-
 @router.get("/")
 def obtener_productos():
     return {"total": len(PRODUCTOS), "productos": PRODUCTOS}
