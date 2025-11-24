@@ -1,11 +1,5 @@
-# productos_router.py
-from fastapi import APIRouter
+# Productos en el invantario
 from datetime import date, timedelta
-
-router = APIRouter(
-    prefix="/productos",
-    tags=["Productos"]
-)
 
 # --------------------------------------------------
 # PRODUCTOS 
@@ -83,12 +77,11 @@ PRODUCTOS = [
     {"id": 22, "nombre": "Cloro 1L", "categoria": "Limpieza", "stock": 11, "stock_min": 4,
     "precio": 18.00, "caducidad": date(2026, 11, 1)},
 ]
-@router.get("/")
+
 def obtener_productos():
     return {"total": len(PRODUCTOS), "productos": PRODUCTOS}
 
 
-@router.get("/{producto_id}")
 def obtener_producto(producto_id: int):
     producto = next((p for p in PRODUCTOS if p["id"] == producto_id), None)
     if not producto:
@@ -96,14 +89,12 @@ def obtener_producto(producto_id: int):
     return producto
 
 
-@router.post("/")
 def agregar_producto(producto: dict):
     producto["id"] = len(PRODUCTOS) + 1
     PRODUCTOS.append(producto)
     return {"mensaje": "Producto agregado", "producto": producto}
 
 
-@router.put("/{producto_id}")
 def actualizar_producto(producto_id: int, datos: dict):
     for p in PRODUCTOS:
         if p["id"] == producto_id:
@@ -112,7 +103,6 @@ def actualizar_producto(producto_id: int, datos: dict):
     return {"error": "Producto no encontrado"}
 
 
-@router.delete("/{producto_id}")
 def borrar_producto(producto_id: int):
     global PRODUCTOS
     PRODUCTOS = [p for p in PRODUCTOS if p["id"] != producto_id]
@@ -123,13 +113,11 @@ def borrar_producto(producto_id: int):
 # ALERTAS AUTOMÁTICAS
 # --------------------------------------------------
 
-@router.get("/alertas/stock_bajo")
 def productos_stock_bajo():
     bajos = [p for p in PRODUCTOS if p["stock"] <= p["stock_min"]]
     return {"total": len(bajos), "stock_bajo": bajos}
 
 
-@router.get("/alertas/proximos_caducar")
 def proximos_a_caducar():
     hoy = date.today()
     limite = hoy + timedelta(days=10)
@@ -137,7 +125,6 @@ def proximos_a_caducar():
     return {"total": len(proximos), "proximos_a_caducar": proximos}
 
 
-@router.get("/alertas/vencidos")
 def productos_vencidos():
     hoy = date.today()
     vencidos = [p for p in PRODUCTOS if p["caducidad"] < hoy]
