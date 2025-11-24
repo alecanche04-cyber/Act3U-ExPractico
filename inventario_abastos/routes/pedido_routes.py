@@ -1,27 +1,19 @@
 #---------------------------------------------
-# Routes de Pedidos
+# Módulo de Pedidos
 # Manejo de pedidos manuales y automáticos
 #---------------------------------------------
-# pedidos_router.py
-from fastapi import APIRouter
 from datetime import date
-
-router = APIRouter(
-    prefix="/pedidos",
-    tags=["Pedidos"]
-)
 
 # Simulación de base de datos de pedidos
 PEDIDOS = []
 
-@router.get("/")
 def obtener_pedidos():
     return {
         "total": len(PEDIDOS),
         "pedidos": PEDIDOS
     }
 
-@router.post("/")
+
 def crear_pedido(pedido: dict):
     nuevo_id = len(PEDIDOS) + 1
     pedido["id"] = nuevo_id
@@ -32,7 +24,8 @@ def crear_pedido(pedido: dict):
         "mensaje": "Pedido creado correctamente",
         "pedido": pedido
     }
-@router.get("/{pedido_id}")
+
+
 def obtener_pedido_por_id(pedido_id: int):
     pedido = next((p for p in PEDIDOS if p["id"] == pedido_id), None)
     if not pedido:
@@ -40,7 +33,6 @@ def obtener_pedido_por_id(pedido_id: int):
     return pedido
 
 
-@router.put("/{pedido_id}")
 def actualizar_pedido(pedido_id: int, datos: dict):
     for p in PEDIDOS:
         if p["id"] == pedido_id:
@@ -52,8 +44,8 @@ def actualizar_pedido(pedido_id: int, datos: dict):
     return {"error": "Pedido no encontrado"}
 
 
-@router.delete("/{pedido_id}")
 def eliminar_pedido(pedido_id: int):
     global PEDIDOS
     PEDIDOS = [p for p in PEDIDOS if p["id"] != pedido_id]
     return {"mensaje": "Pedido eliminado correctamente"}
+
