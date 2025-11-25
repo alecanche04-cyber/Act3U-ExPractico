@@ -4,7 +4,7 @@ from collections import defaultdict # Importa defaultdict para diccionarios con 
 import logging # Importa módulo de logging para registro de eventos
 from typing import List, Dict, Optional # Importa tipos para anotaciones de tipo
 
-from .inventario import check_low_stock, calculate_suggested_order_qty # Importa funciones del módulo inventario
+from .inventario import verificar_bajo_stock, calcular_cantidad_sugerida_orden
 
 try:
     from ..database.db import add as db_adb, updata as db_update, get_all as db_get_all # Intenta importar funciones de la base de datos JSON
@@ -23,13 +23,12 @@ def generar_ordenes_sugeridas(productos_bajos: Optional[List[Dict]] = None, fact
 
 #Salida esperada:
 #Diccionario: { id_proveedor: [ { 'id_producto': int, 'nombre': str, 'cantidad_sugerida': int }, ... ], ... }
-    
-    
-    if productos_bajos is None: # Si no se proporcionan productos bajos
-        productos_bajos = check_low_stock() # Obtiene productos con bajo stock si no se proporcionan
-        grouped = defaultdict(list) # Diccionario para agrupar órdenes por proveedor
+    if productos_bajos is None:
+            productos_bajos = verificar_bajo_stock()
+grouped = defaultdict(list)
 
-    for p in productos_bajos: # Recorre productos con bajo stock
+
+for p in productos_bajos: # Recorre productos con bajo stock
         try:
             if isinstance(p, dict): # Si el producto es un diccionario
                 id_producto = p.get("id") # Obtiene el ID del producto
@@ -47,7 +46,7 @@ def generar_ordenes_sugeridas(productos_bajos: Optional[List[Dict]] = None, fact
                 id_proveedor = getattr(p, "id_proveedor", None) # Obtiene el ID del proveedor
 
                 try: 
-                    cantidad_sugerida = calculate_suggested_order_qty(p, factor = factor) # Calcula la cantidad sugerida usando el modelo
+                    cantidad_sugerida = calculate_suggested_order_qty (p, factor = factor) # Calcula la cantidad sugerida usando el modelo
                 except Exception:
                     cantidad = int(getattr(p, "cantidad", 0) or 0) # Obtiene la cantidad actual
                     cantidad_minima = int(getattr(p, "cantidad_minima", 1) or 1) # Obtiene la cantidad mínima
@@ -64,7 +63,7 @@ def generar_ordenes_sugeridas(productos_bajos: Optional[List[Dict]] = None, fact
             "cantidad_sugerida": cantidad_sugerida, # Cantidad sugerida para ordenar
         })
 
-    return dict(grouped) # Devuelve el diccionario de órdenes sugeridas agrupadas por proveedor
+        return dict(grouped) # Devuelve el diccionario de órdenes sugeridas agrupadas por proveedor
 
 def crear_orden_dict(id_proveedor: int, items: List[Dict], numero_pedido: Optional[str] = None) -> Dict: # Crea un diccionario que representa una orden de pedido
 
