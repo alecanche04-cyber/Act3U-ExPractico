@@ -1,4 +1,4 @@
-# Productos en el invantario
+# productos
 from datetime import date, timedelta
 
 # --------------------------------------------------
