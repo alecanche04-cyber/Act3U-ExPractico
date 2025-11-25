@@ -1,8 +1,8 @@
 # services/alertas.py
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from utilidades.helpers import obtener_todos_los_productos, obtener_info_proveedor, formatear_fecha
-from utilidades.config import UMBRALES_STOCK_MINIMO, STOCK_MINIMO_GENERICO, DIAS_ALERTA_CADUCIDAD
+from config import UMBRALES_STOCK_MINIMO, STOCK_MINIMO_GENERICO, DIAS_ALERTA_CADUCIDAD
 
 # SERVICIOS DE GESTIÓN DE ALERTAS (STOCK Y CADUCIDAD)
 
