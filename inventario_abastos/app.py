@@ -71,7 +71,7 @@ def iniciar_scheduler() -> None: # Función para iniciar el scheduler de tareas 
     scheduler = BackgroundScheduler() # Crea una instancia del scheduler en segundo plano
 def producto_bajo_stock():
     productos = obtener_todos("inventario") # Obtiene todos los productos del inventario
-    res = check_low_stock(productos) # Verifica productos con bajo stock    
+    res = producto_bajo_stock(productos) # Verifica productos con bajo stock    
     if res:
         notificar_y_loguear("Productos con bajo stock detectados", res) # Notifica y loguea productos con bajo stock
         return
